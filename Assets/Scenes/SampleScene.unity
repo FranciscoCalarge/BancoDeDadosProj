@@ -42,8 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 13
-  m_BakeOnSceneLoad: 0
+  serializedVersion: 12
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -621,6 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de46fe29fa51c0d47a3888307b6d8c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chaveiroPrefab: {fileID: 8987808603472529860, guid: 5c3991104b5e74b49871edfcec2787a1, type: 3}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
