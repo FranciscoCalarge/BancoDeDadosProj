@@ -67,9 +67,7 @@ public class GameManager : MonoBehaviour
         {
             while (reader.Read())
             {
-
-                Item item = new Item(reader.GetString(1),(int)reader.GetInt32(2),reader.GetString(3), reader.GetString(4));
-                items.Add(item);
+                Item item = new Item((int)reader.GetInt32(0),reader.GetString(1),(int)reader.GetInt32(2),reader.GetString(3), reader.GetString(4));
 
                 InstanciarDado(item);
             }
@@ -88,19 +86,55 @@ public class GameManager : MonoBehaviour
 
     public void AdicionarDado()
     {
+        conexaoDb = CriarEAbrirDB();
 
         ComandoInserirTabela(nomeTextPro.text,(int)Mathf.Floor(qtdSlider.value), tipoTextPro.text, descriptionTextPro.text);
+
+        InstanciarDado(new Item(nomeTextPro.text, (int)Mathf.Floor(qtdSlider.value), tipoTextPro.text, descriptionTextPro.text));
+        conexaoDb.Close();
+    }
+
+    public void RemoverDado(Item item)
+    {
+        conexaoDb = CriarEAbrirDB();
+
+        ComandoRemoverTabela("SACOLA", item);
+
+        conexaoDb.Close();
+    }
+
+    public void ComandoRemoverTabela(string tabela, Item item)
+    {
+        IDbCommand comandoRemover = conexaoDb.CreateCommand();
+        comandoRemover.CommandText = String.Format("DELETE FROM {0} WHERE id={1}", tabela, item.Id );
+
+        comandoRemover.ExecuteNonQuery();
+
+
+
     }
 
     public void InstanciarDado(Item item)
     {
+        items.Add(item);
         GameObject aux = Instantiate(chaveiroPrefab);
 
+        aux.name = item.NomeItem;
         aux.GetComponent<ChaveiroScript>().item = item;
         SpringJoint joint = aux.GetComponent<SpringJoint>();
         joint.connectedBody = GameObject.Find("Sphere").GetComponent<Rigidbody>();
         aux.GetComponent<MeshRenderer>().material = aux.GetComponent<MeshRenderer>().material;
-        aux.GetComponent<MeshRenderer>().material.SetFloat("_hue_offset", UnityEngine.Random.value);
+
+        float random = UnityEngine.Random.value;
+
+        joint.damper = random*100;
+        aux.GetComponent<MeshRenderer>().material.SetFloat("_hue_offset", random);
+    }
+
+    public void RefreshTab()
+    {
+        nomeTextPro.text =  (Mathf.PI).ToString();
+        Debug.Log(nomeTextPro.text);
     }
 
     // Update is called once per frame
