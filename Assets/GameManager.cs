@@ -2,14 +2,28 @@ using System;
 using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
+using TMPro;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject chaveiroPrefab;
     IDbConnection conexaoDb;
+
+    List<Item> items;
+
+    [SerializeField] TMP_Text nomeTextPro;
+    [SerializeField] TMP_Text tipoTextPro;
+    [SerializeField] Slider qtdSlider;
+    [SerializeField] TMP_Text descriptionTextPro;
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        items = new List<Item>();
         conexaoDb = CriarEAbrirDB();
 
         ComandoCriarTabela();
@@ -53,12 +67,11 @@ public class GameManager : MonoBehaviour
         {
             while (reader.Read())
             {
-                GameObject aux =  Instantiate(chaveiroPrefab);
-                aux.name =reader.GetString(1);
-                SpringJoint joint = aux.GetComponent<SpringJoint>();
-                joint.connectedBody = GameObject.Find("Sphere").GetComponent<Rigidbody>();
-                aux.GetComponent<MeshRenderer>().material = aux.GetComponent<MeshRenderer>().material;
-                aux.GetComponent<MeshRenderer>().material.SetFloat("_hue_offset", UnityEngine.Random.value);
+
+                Item item = new Item(reader.GetString(1),(int)reader.GetInt32(2),reader.GetString(3), reader.GetString(4));
+                items.Add(item);
+
+                InstanciarDado(item);
             }
         }
 
@@ -71,6 +84,23 @@ public class GameManager : MonoBehaviour
         conexaoDb.Open();
 
         return conexaoDb;
+    }
+
+    public void AdicionarDado()
+    {
+
+        ComandoInserirTabela(nomeTextPro.text,(int)Mathf.Floor(qtdSlider.value), tipoTextPro.text, descriptionTextPro.text);
+    }
+
+    public void InstanciarDado(Item item)
+    {
+        GameObject aux = Instantiate(chaveiroPrefab);
+
+        aux.GetComponent<ChaveiroScript>().item = item;
+        SpringJoint joint = aux.GetComponent<SpringJoint>();
+        joint.connectedBody = GameObject.Find("Sphere").GetComponent<Rigidbody>();
+        aux.GetComponent<MeshRenderer>().material = aux.GetComponent<MeshRenderer>().material;
+        aux.GetComponent<MeshRenderer>().material.SetFloat("_hue_offset", UnityEngine.Random.value);
     }
 
     // Update is called once per frame

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1479412684948957116}
   - component: {fileID: 3140908931596467127}
   - component: {fileID: 1795599419217674126}
+  - component: {fileID: 4610518438160740775}
   m_Layer: 0
   m_Name: Chaveiro
   m_TagString: Untagged
@@ -162,3 +163,15 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.50000006
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4610518438160740775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987808603472529860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a4a19bf52cd920429b8865ee9dd1ea5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
