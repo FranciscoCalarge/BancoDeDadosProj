@@ -142,4 +142,9 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    public void EncerrarJogo()
+    {
+        Application.Quit();
+    }
 }
